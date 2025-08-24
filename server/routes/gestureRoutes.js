@@ -1,54 +1,54 @@
 const express = require("express");
 const router = express.Router();
-const tf = require("@tensorflow/tfjs");
-const { createCanvas, loadImage } = require("canvas");
+const tf = require("@tensorflow/tfjs-node");
 
 let model;
 
-// Load model once when server starts
+// Load your gesture classification model
 (async () => {
   try {
-    model = await tf.loadLayersModel(""); 
-    console.log("Model loaded successfully!");
+    model = await tf.loadLayersModel("file://C:/Warnwave_7SGP/server/model/model.json");
+    console.log("✅ Gesture Model loaded!");
   } catch (err) {
-    console.error("Error loading model:", err);
+    console.error("❌ Error loading model:", err);
   }
 })();
 
-// Helper: convert base64 → tensor
-async function base64ToTensor(base64) {
-  const base64Data = base64.replace(/^data:image\/\w+;base64,/, "");
-  const buffer = Buffer.from(base64Data, "base64");
-  const img = await loadImage(buffer);
-
-  const canvas = createCanvas(224, 224); // assuming MobileNet input size
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0, 224, 224);
-
-  const imageData = ctx.getImageData(0, 0, 224, 224);
-  let tensor = tf.browser.fromPixels(imageData).toFloat().div(tf.scalar(255)).expandDims();
-  return tensor;
-}
+// Labels should match your training dataset
+const labels = ["Protest", "Peace", "Danger", "Stop", "Attention", "Evacuate", "Radio", "Silence"];
 
 router.post("/", async (req, res) => {
   try {
-    if (!model) return res.status(500).json({ error: "Model not loaded" });
+    if (!model) return res.status(500).json({ error: "Model not loaded yet" });
 
-    const { image } = req.body;
-    const tensor = await base64ToTensor(image);
+    const { landmarks, image } = req.body;
 
-    const prediction = model.predict(tensor);
-    const scores = prediction.dataSync();
-    const classIdx = scores.indexOf(Math.max(...scores));
+    if (!landmarks && !image) {
+      return res.status(400).json({ error: "No input provided (landmarks or image)" });
+    }
 
-    // Replace with your class labels
-    const labels = ["Thumbs Up", "Peace", "Fist", "Palm"];
-    const gesture = labels[classIdx] || "Unknown";
+    // For now: use landmarks (frontend should compute them with Mediapipe)
+    if (landmarks) {
+      const inputTensor = tf.tensor(landmarks).flatten().reshape([1, -1]);
+      const prediction = model.predict(inputTensor);
+      const scores = await prediction.data();
+      const classIdx = scores.indexOf(Math.max(...scores));
 
-    res.json({ gesture });
+      res.json({
+        gesture: labels[classIdx] || "Unknown",
+        confidence: Math.max(...scores).toFixed(2),
+      });
+
+      tf.dispose([inputTensor, prediction]);
+    } else {
+      // 🚧 Placeholder for base64 image support
+      return res.status(501).json({
+        error: "Image input not yet supported. Please send landmarks instead.",
+      });
+    }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Prediction failed" });
+    console.error("Prediction error:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 

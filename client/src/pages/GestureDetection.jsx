@@ -8,36 +8,34 @@ const videoConstraints = {
   facingMode: "user",
 };
 
-export default function GestureDetection() {
+function Gesture() {
   const webcamRef = useRef(null);
   const [gesture, setGesture] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const captureFrame = useCallback(async () => {
-    if (webcamRef.current) {
-      const imageSrc = webcamRef.current.getScreenshot();
+  const captureAndSend = useCallback(async () => {
+    if (!webcamRef.current) return;
 
-      try {
-        const res = await axios.post("http://localhost:5000/api/gesture", {
-          image: imageSrc, // sending base64 image
-        });
+    const imageSrc = webcamRef.current.getScreenshot();
+    if (!imageSrc) return;
 
-        setGesture(res.data.gesture);
-      } catch (err) {
-        console.error("Error detecting gesture:", err);
-      }
+    setLoading(true);
+    try {
+     const res = await axios.post("http://localhost:5000/api/gesture", {
+    landmarks, // 21x3 array
+
+
+      });
+      setGesture(res.data.gesture);
+    } catch (err) {
+      console.error("Prediction error:", err);
     }
+    setLoading(false);
   }, [webcamRef]);
 
-  // Capture frame every 1 sec
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      captureFrame();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [captureFrame]);
-
   return (
-    <div className="flex flex-col items-center">
+    <div style={{ textAlign: "center", marginTop: "20px" }}>
+      <h2>🤖 Hand Gesture Detection</h2>
       <Webcam
         audio={false}
         height={480}
@@ -46,7 +44,23 @@ export default function GestureDetection() {
         width={640}
         videoConstraints={videoConstraints}
       />
-      <h2 className="mt-4 text-xl font-bold">Detected Gesture: {gesture}</h2>
+      <br />
+      <button
+        onClick={captureAndSend}
+        style={{
+          padding: "10px 20px",
+          marginTop: "10px",
+          fontSize: "16px",
+          cursor: "pointer",
+        }}
+      >
+        Capture & Predict
+      </button>
+
+      {loading && <p>⏳ Predicting...</p>}
+      {gesture && <h3>👉 Detected Gesture: {gesture}</h3>}
     </div>
   );
 }
+
+export default Gesture;

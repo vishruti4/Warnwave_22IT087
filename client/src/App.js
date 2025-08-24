@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Gesture from "./pages/Gesture"; // 👈 import new page
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 import { useContext, useEffect } from "react";
 import axios from "axios";
@@ -37,6 +38,14 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route
+            path="/gesture"
+            element={
+              <PrivateRoute>
+                <Gesture />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
