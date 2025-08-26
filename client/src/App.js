@@ -2,12 +2,12 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Gesture from "./pages/Gesture"; // 👈 import new page
+import Gesture from "./pages/GestureDetection"; 
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 import { useContext, useEffect } from "react";
 import axios from "axios";
 
-// Protect routes
+// Private Route wrapper
 function PrivateRoute({ children }) {
   const { user, setUser } = useContext(AuthContext);
 
@@ -26,7 +26,10 @@ function PrivateRoute({ children }) {
     }
   }, [user, setUser]);
 
-  if (!user) return <Navigate to="/login" replace />;
+  if (user === null) {
+    return <Navigate to="/login" replace />;
+  }
+
   return children;
 }
 
@@ -35,9 +38,12 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+
+          {/* Protected Route */}
           <Route
             path="/gesture"
             element={
@@ -46,6 +52,9 @@ function App() {
               </PrivateRoute>
             }
           />
+
+          {/* Fallback for undefined routes */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

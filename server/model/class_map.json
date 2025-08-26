@@ -1,0 +1,11 @@
+{
+  "attention": 0,
+  "clear": 1,
+  "danger": 2,
+  "evacuate": 3,
+  "no_entry": 4,
+  "protest": 5,
+  "radio": 6,
+  "silence": 7,
+  "stop": 8
+}

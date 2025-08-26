@@ -1,5 +1,6 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import Webcam from "react-webcam";
+import "@tensorflow/tfjs-backend-webgl";
 import axios from "axios";
 
 const videoConstraints = {
@@ -8,7 +9,7 @@ const videoConstraints = {
   facingMode: "user",
 };
 
-function Gesture() {
+function GestureDetection() {
   const webcamRef = useRef(null);
   const [gesture, setGesture] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,11 +22,7 @@ function Gesture() {
 
     setLoading(true);
     try {
-     const res = await axios.post("http://localhost:5000/api/gesture", {
-    landmarks, // 21x3 array
-
-
-      });
+      const res = await axios.post("http://localhost:5000/api/gesture", { image: imageSrc });
       setGesture(res.data.gesture);
     } catch (err) {
       console.error("Prediction error:", err);
@@ -47,12 +44,7 @@ function Gesture() {
       <br />
       <button
         onClick={captureAndSend}
-        style={{
-          padding: "10px 20px",
-          marginTop: "10px",
-          fontSize: "16px",
-          cursor: "pointer",
-        }}
+        style={{ padding: "10px 20px", marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
       >
         Capture & Predict
       </button>
@@ -63,4 +55,4 @@ function Gesture() {
   );
 }
 
-export default Gesture;
+export default GestureDetection;
