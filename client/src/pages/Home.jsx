@@ -364,15 +364,11 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Main Content */}
+    
       <main className="flex-1 bg-gray-100 p-8 overflow-y-auto">
         {activePage === "home" && <InfoSection />}
         {activePage === "live" && <GestureDetection />}
-        {activePage === "training" && (
-          <div className="text-center p-10">
-            🎯 Training Mode Coming Soon...
-          </div>
-        )}
+        {activePage === "training" && <GestureDetection />}
         {activePage === "profile" && (
   <ProfileSection
     user={user}

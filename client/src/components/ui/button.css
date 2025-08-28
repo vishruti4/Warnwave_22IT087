@@ -1,0 +1,21 @@
+.btn {
+  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, #5d63e3, #a1a5ff);
+  transform: scale(1.05);
+}
+
+.btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
