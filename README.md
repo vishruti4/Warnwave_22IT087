@@ -53,11 +53,11 @@ MongoDB (Alert logging & user data)
 
 Python (TensorFlow model inference)
 
-AI / CV
+OpenCV and Mediapipe (Images for dataset)
 
 Mediapipe (Hand tracking)
 
-TensorFlow (CNN model – MobileNet backbone)
+MobileNet (CNN model)
 
 ## Future Enhancements
 
