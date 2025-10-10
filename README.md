@@ -1,10 +1,10 @@
 # Warnwave_22IT087
 
-# 🚨 Warnwave: AI-Powered Hand Gesture Recognition for Civilian Safety
+## 🚨 Warnwave: AI-Powered Hand Gesture Recognition for Civilian Safety
 
 Warnwave is an AI-driven real-time gesture recognition system designed to enable silent, universal, and reliable communication during emergencies — such as wars, natural disasters, or chaotic environments — where traditional communication fails.
 
-# Problem Statement
+## Problem Statement
 
 In crisis situations, noise, panic, and language barriers often make verbal communication impossible. Sirens can be drowned out, and not everyone understands the same language.
 
@@ -29,8 +29,11 @@ However, lighting and background variability remain challenges — which Warnwav
 # Performance Highlights
 
 ✅ 85.12% accuracy on real-time gesture recognition
+
 ✅ Works reliably across lighting and backgrounds
+
 ✅ Perfect accuracy for high-priority gestures (e.g., Danger, Stop)
+
 ✅ Optimized for web and edge deployment
 
 # Tech Stack
