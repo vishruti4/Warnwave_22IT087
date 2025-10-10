@@ -1,19 +1,20 @@
-
-
 import { useContext, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Login from "./Login";
 import Register from "./Register";
 import axios from "axios";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import signGif from "../assets/sign.gif";
-import GestureDetection from "./GestureDetection"
+import GestureDetection from "./GestureDetection";
+import History  from "./History";
  
 const DEFAULT_AVATAR =
   "https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff&rounded=true";
 
 export default function Home() {
   const { user, setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState("login");
   const [activePage, setActivePage] = useState("home");
@@ -122,6 +123,13 @@ export default function Home() {
         {/* Username + Email */}
         <p className="font-semibold">{user?.username}</p>
         <p className="text-gray-500 text-sm">{user?.email}</p>
+        <button
+          type="button"
+          onClick={() => navigate("/profile")}
+          className="mt-4 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+        >
+          Update Profile
+        </button>
       </div>
     </div>
   );
@@ -152,21 +160,13 @@ export default function Home() {
     {/* How It Works */}
     <div className="space-y-6 text-gray-700">
       <h3 className="font-bold text-2xl text-center">⚡ How it Works</h3>
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="p-6 bg-blue-50 rounded-lg shadow-inner">
-          <h4 className="font-bold text-xl mb-2">📡 Live Mode</h4>
-          <p>
-            Instantly predicts and recognizes gestures in{" "}
-            <span className="font-semibold">real-time</span>. No need for
-            passwords—gestures are enough for secure access and signaling and also be notify by notfication that this sign is predict.
-          </p>
-        </div>
-        <div className="p-6 bg-green-50 rounded-lg shadow-inner">
+      <div className="grid md:grid-cols-1 gap-6">
+        <div className="p-6 bg-green-100 rounded-lg shadow-inner">
           <h4 className="font-bold text-xl mb-2">🎯 Training Mode</h4>
           <p>
             Practice your gestures and{" "}
-            <span className="font-semibold">train the system</span>. Once
-            trained, you can confidently use them in Live Mode.
+            <span className="font-semibold">train yourself</span>. Once
+            trained, you can confidently use them in Risky Environment.
           </p>
         </div>
       </div>
@@ -344,13 +344,13 @@ export default function Home() {
             onClick={() => setActivePage("live")}
             className="hover:text-blue-400"
           >
-            Live Mode
+            Training Mode
           </button>
           <button
-            onClick={() => setActivePage("training")}
+            onClick={() => setActivePage("history")}
             className="hover:text-blue-400"
           >
-            Training Mode
+            History
           </button>
           <button
             onClick={() => setActivePage("profile")}
@@ -369,6 +369,7 @@ export default function Home() {
         {activePage === "home" && <InfoSection />}
         {activePage === "live" && <GestureDetection />}
         {activePage === "training" && <GestureDetection />}
+        {activePage === "history" && <History/>}
         {activePage === "profile" && (
   <ProfileSection
     user={user}
@@ -431,5 +432,3 @@ export default function Home() {
     </div>
   );
 }
-
-

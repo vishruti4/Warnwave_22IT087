@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 export const AuthContext = createContext();
@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 
   const token = localStorage.getItem('token');
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
       if (token) {
         const res = await axios.get('http://localhost:5000/api/auth/me', {
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       console.log("Auth failed");
     }
-  };
+  }, [token]);
 
  useEffect(() => {
   fetchUser();
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, refreshUser: fetchUser }}>
       {children}
     </AuthContext.Provider>
   );

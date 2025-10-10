@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Gesture from "./pages/GestureDetection"; 
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 import { useContext, useEffect } from "react";
+import History from "./pages/History";
+import Profile from "./pages/Profile.jsx";
 import axios from "axios";
 
 // Private Route wrapper
@@ -42,6 +44,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
 
           {/* Protected Route */}
           <Route
@@ -49,6 +52,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Gesture />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <PrivateRoute>
+               <History />
               </PrivateRoute>
             }
           />

@@ -72,6 +72,34 @@ exports.getMe = async (req, res) => {
   }
 };
 
+// Update profile fields (username, email, password, profileImage)
+exports.updateProfile = async (req, res) => {
+  try {
+    const { username, email, password, profileImage } = req.body;
+    const update = {};
+
+    if (username) update.username = username;
+    if (email) update.email = email;
+    if (profileImage !== undefined) update.profileImage = profileImage;
+    if (password) {
+      update.password = await bcrypt.hash(password, 10);
+    }
+
+    const user = await User.findByIdAndUpdate(req.user.id, update, {
+      new: true,
+      runValidators: true,
+      select: "-password -otp",
+    });
+    res.json(user);
+  } catch (err) {
+    // Duplicate email error or other validation
+    if (err && err.code === 11000) {
+      return res.status(400).json({ msg: "Email already used" });
+    }
+    res.status(400).json({ msg: "Profile update failed" });
+  }
+};
+
 // Update profile image
 exports.updateProfileImage = async (req, res) => {
   try {
