@@ -11,7 +11,7 @@ In crisis situations, noise, panic, and language barriers often make verbal comm
 But gestures?
 They're universal, fast, and silent — making them the perfect medium for emergency signaling.
 
-# Solution — Warnwave
+## Solution — Warnwave
 
 Warnwave bridges this gap using AI.
 It transforms hand gestures into instant safety alerts that can be transmitted to authorities or displayed in real-time dashboards.
@@ -26,7 +26,7 @@ MobileNet	~70%+	Lightweight, fast, and deployable
 ⚡ MobileNet was chosen for its efficiency on edge devices.
 However, lighting and background variability remain challenges — which Warnwave continues to optimize.
 
-# Performance Highlights
+## Performance Highlights
 
 ✅ 85.12% accuracy on real-time gesture recognition
 
@@ -36,7 +36,7 @@ However, lighting and background variability remain challenges — which Warnwav
 
 ✅ Optimized for web and edge deployment
 
-# Tech Stack
+## Tech Stack
 Frontend
 
 React.js
@@ -59,7 +59,7 @@ Mediapipe (Hand tracking)
 
 TensorFlow (CNN model – MobileNet backbone)
 
-# Future Enhancements
+## Future Enhancements
 
 👥 Multi-person detection — recognize gestures in crowds
 
@@ -73,20 +73,20 @@ TensorFlow (CNN model – MobileNet backbone)
 
 # Installation & Setup
 
-# Clone the repository
+## Clone the repository
 git clone https://github.com/<your-username>/warnwave.git
 cd warnwave
 
-# Install backend dependencies
+## Install backend dependencies
 cd server
 npm install
 
-# Run backend server
+## Run backend server
 npm start
 
-# Install frontend dependencies
+## Install frontend dependencies
 cd ../client
 npm install
 
-# Run frontend
+## Run frontend
 npm run dev
